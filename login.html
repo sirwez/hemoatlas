@@ -1,1 +1,172 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Login | HemoAtlas</title><meta name="description" content="HemoAtlas - banco de imagens em hematologia"><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><link rel="stylesheet" href="css/styles.css"></head><body><header class="hemo-topbar"><div class="hemo-shell"><div class="flex min-h-[72px] items-center justify-between gap-4"><a href="index.html" class="flex items-center gap-3"><div class="hemo-logo-mark">H</div><div><strong class="block text-xl text-[var(--deep)]">HemoAtlas</strong><span class="text-xs font-bold uppercase tracking-[.18em] text-slate-500">Banco de Imagens em Hematologia</span></div></a><nav class="hemo-nav hidden lg:flex items-center gap-1"><a data-nav href="index.html">Início</a><a data-nav href="catalogo.html">Catálogo</a><a data-nav href="casos.html">Casos</a><a data-nav href="upload.html">Upload</a><a data-nav href="lgpd.html">LGPD</a><a data-nav href="admin.html">Admin</a></nav><div class="hidden md:flex items-center gap-2"><a href="favoritos.html" class="hemo-btn hemo-btn-secondary">Favoritos</a><a href="login.html" class="hemo-btn hemo-btn-primary">Entrar</a></div><button id="mobileMenuBtn" class="hemo-btn hemo-btn-secondary lg:hidden">Menu</button></div><div id="mobileMenu" class="mobile-menu border-t border-slate-200 py-3 gap-2 lg:hidden"><a href="index.html">Início</a><a href="catalogo.html">Catálogo</a><a href="casos.html">Casos</a><a href="upload.html">Upload</a><a href="admin.html">Admin</a><a href="login.html">Entrar</a></div></div></header><section class="hemo-shell py-8"><div class="mb-5 text-sm font-bold text-slate-500"><a href="index.html" class="text-[var(--wine)]">Início</a> / Login</div><div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between"><div><p class="text-sm font-black uppercase tracking-[.2em] text-[var(--wine)]">Acesso</p><h1 class="mt-2 text-3xl md:text-4xl font-black text-[var(--deep)]">Entrar ou criar conta</h1><p class="mt-3 max-w-3xl leading-7 text-slate-600">Use email e senha. Em modo sem Supabase, qualquer email entra como demonstração; emails com admin, curator ou privacy simulam roles.</p></div></div></section><main class="hemo-shell"><div class="grid gap-6 md:grid-cols-2"><form id="loginForm" class="hemo-card p-5 grid gap-4"><h2 class="text-xl font-black">Login</h2><input name="email" type="email" required class="hemo-input" placeholder="email"><input name="password" type="password" required class="hemo-input" placeholder="senha"><button class="hemo-btn hemo-btn-primary">Entrar</button></form><form id="signupForm" class="hemo-card p-5 grid gap-4"><h2 class="text-xl font-black">Cadastro</h2><input name="full_name" class="hemo-input" placeholder="nome"><input name="institution" class="hemo-input" placeholder="instituição"><input name="email" type="email" required class="hemo-input" placeholder="email"><input name="password" type="password" required class="hemo-input" placeholder="senha"><button class="hemo-btn hemo-btn-secondary">Criar conta</button></form></div></main><script>document.addEventListener('DOMContentLoaded',()=>{HemoApp.q('#loginForm').addEventListener('submit',e=>{e.preventDefault();HemoAuth.login(e.target.email.value,e.target.password.value)});HemoApp.q('#signupForm').addEventListener('submit',e=>{e.preventDefault();HemoAuth.signup(e.target.email.value,e.target.password.value,e.target.full_name.value,e.target.institution.value)});});</script><footer class="mt-12 border-t border-slate-200 bg-[var(--deep)] text-white"><div class="hemo-shell py-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"><div><strong class="text-xl">HemoAtlas</strong><p class="mt-1 text-sm text-white/65">Conteúdo destinado a fins educacionais e científicos. Não substitui avaliação diagnóstica profissional.</p></div><div class="flex flex-wrap gap-4 text-sm text-white/70"><a href="termos.html">Termos</a><a href="privacidade.html">Privacidade</a><a href="lgpd.html">LGPD</a></div></div></footer><script src="js/supabase.js"></script><script src="js/auth.js"></script><script src="js/reports.js"></script><script src="js/app.js"></script><script src="js/ui-v6.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | HemoAtlas</title>
+    <meta
+      name="description"
+      content="HemoAtlas - banco de imagens em hematologia"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="hemo-topbar">
+      <div class="hemo-shell">
+        <div class="flex min-h-[72px] items-center justify-between gap-4">
+          <a href="index.html" class="flex items-center gap-3"
+            ><div class="hemo-logo-mark">H</div>
+            <div>
+              <strong class="block text-xl text-[var(--deep)]">HemoAtlas</strong
+              ><span
+                class="text-xs font-bold uppercase tracking-[.18em] text-slate-500"
+                >Banco de Imagens em Hematologia</span
+              >
+            </div></a
+          >
+          <nav class="hemo-nav hidden lg:flex items-center gap-1">
+            <a data-nav href="index.html">Início</a
+            ><a data-nav href="catalogo.html">Catálogo</a
+            ><a data-nav href="casos.html">Casos</a
+            ><a data-nav href="upload.html">Upload</a
+            ><a data-nav href="lgpd.html">LGPD</a
+            ><a data-nav href="admin.html">Admin</a>
+          </nav>
+          <div class="hidden md:flex items-center gap-2">
+            <a href="favoritos.html" class="hemo-btn hemo-btn-secondary"
+              >Favoritos</a
+            ><a href="login.html" class="hemo-btn hemo-btn-primary">Entrar</a>
+          </div>
+          <button
+            id="mobileMenuBtn"
+            class="hemo-btn hemo-btn-secondary lg:hidden"
+          >
+            Menu
+          </button>
+        </div>
+        <div
+          id="mobileMenu"
+          class="mobile-menu border-t border-slate-200 py-3 gap-2 lg:hidden"
+        >
+          <a href="index.html">Início</a><a href="catalogo.html">Catálogo</a
+          ><a href="casos.html">Casos</a><a href="upload.html">Upload</a
+          ><a href="admin.html">Admin</a><a href="login.html">Entrar</a>
+        </div>
+      </div>
+    </header>
+    <section class="hemo-shell py-8">
+      <div class="mb-5 text-sm font-bold text-slate-500">
+        <a href="index.html" class="text-[var(--wine)]">Início</a> / Login
+      </div>
+      <div
+        class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between"
+      >
+        <div>
+          <p
+            class="text-sm font-black uppercase tracking-[.2em] text-[var(--wine)]"
+          >
+            Acesso
+          </p>
+          <h1 class="mt-2 text-3xl md:text-4xl font-black text-[var(--deep)]">
+            Entrar ou criar conta
+          </h1>
+          <p class="mt-3 max-w-3xl leading-7 text-slate-600">
+            Use email e senha. Em modo sem Supabase, qualquer email entra como
+            demonstração; emails com admin, curator ou privacy simulam roles.
+          </p>
+        </div>
+      </div>
+    </section>
+    <main class="hemo-shell">
+      <div class="grid gap-6 md:grid-cols-2">
+        <form id="loginForm" class="hemo-card p-5 grid gap-4">
+          <h2 class="text-xl font-black">Login</h2>
+          <input
+            name="email"
+            type="email"
+            required
+            class="hemo-input"
+            placeholder="email"
+          /><input
+            name="password"
+            type="password"
+            required
+            class="hemo-input"
+            placeholder="senha"
+          /><button class="hemo-btn hemo-btn-primary">Entrar</button>
+        </form>
+        <form id="signupForm" class="hemo-card p-5 grid gap-4">
+          <h2 class="text-xl font-black">Cadastro</h2>
+          <input name="full_name" class="hemo-input" placeholder="nome" /><input
+            name="institution"
+            class="hemo-input"
+            placeholder="instituição"
+          /><input
+            name="email"
+            type="email"
+            required
+            class="hemo-input"
+            placeholder="email"
+          /><input
+            name="password"
+            type="password"
+            required
+            class="hemo-input"
+            placeholder="senha"
+          /><button class="hemo-btn hemo-btn-secondary">Criar conta</button>
+        </form>
+      </div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const loginForm = HemoApp.q("#loginForm");
+        const signupForm = HemoApp.q("#signupForm");
+
+        loginForm?.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          await HemoAuth.login(
+            e.target.email.value.trim(),
+            e.target.password.value,
+          );
+        });
+
+        signupForm?.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          await HemoAuth.signup({
+            fullName: e.target.full_name.value.trim(),
+            institution: e.target.institution.value.trim(),
+            email: e.target.email.value.trim(),
+            password: e.target.password.value,
+          });
+        });
+      });
+    </script>
+    <footer class="mt-12 border-t border-slate-200 bg-[var(--deep)] text-white">
+      <div
+        class="hemo-shell py-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+      >
+        <div>
+          <strong class="text-xl">HemoAtlas</strong>
+          <p class="mt-1 text-sm text-white/65">
+            Conteúdo destinado a fins educacionais e científicos. Não substitui
+            avaliação diagnóstica profissional.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4 text-sm text-white/70">
+          <a href="termos.html">Termos</a
+          ><a href="privacidade.html">Privacidade</a
+          ><a href="lgpd.html">LGPD</a>
+        </div>
+      </div>
+    </footer>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/ui-v6.js"></script>
+  </body>
+</html>

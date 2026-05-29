@@ -130,34 +130,65 @@ window.HemoAuth = (() => {
     setTimeout(() => (location.href = "perfil.html"), 300);
   }
 
-  async function signup({ fullName, institution, email, password }) {
-    if (!HemoSupabase.isConfigured()) {
-      HemoApp.toast("Cadastro demo realizado.");
-      return;
-    }
+async function signup(input) {
+  const fullName = String(input?.fullName || input?.full_name || '').trim();
+  const institution = String(input?.institution || '').trim();
+  const email = String(input?.email || '').trim();
+  const password = String(input?.password || '');
 
-    const { data, error } = await HemoSupabase.client.auth.signUp({
+  if (!email || !password) {
+    HemoApp.toast('Informe email e senha para criar a conta.', 'error');
+    console.warn('Cadastro bloqueado: email ou senha ausentes', {
+      fullName,
+      institution,
       email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          institution,
-        },
-      },
+      hasPassword: Boolean(password)
     });
-
-    if (error) throw error;
-
-    if (data.session) {
-      HemoApp.toast("Conta criada com sucesso. Você já está logado.");
-      window.location.href = "perfil.html";
-      return;
-    }
-
-    HemoApp.toast("Conta criada. Faça login para continuar.");
-    window.location.href = "login.html";
+    return;
   }
+
+  if (!HemoSupabase.isConfigured()) {
+    const profile = makeDemoProfile(email);
+    profile.full_name = fullName || profile.full_name;
+    profile.institution = institution || 'Instituição Demo';
+
+    localStorage.setItem('hemo_demo_profile', JSON.stringify(profile));
+
+    currentUser = profile;
+    currentProfile = profile;
+    cacheAuth(profile, profile);
+
+    HemoApp.toast('Cadastro demo realizado.');
+    setTimeout(() => (location.href = 'perfil.html'), 300);
+    return;
+  }
+
+  const { data, error } = await HemoSupabase.client.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: fullName,
+        institution
+      }
+    }
+  });
+
+  if (error) {
+    HemoApp.toast(error.message, 'error');
+    throw error;
+  }
+
+  if (data.session) {
+    await loadSession();
+    HemoApp.toast('Conta criada com sucesso. Você já está logado.');
+    setTimeout(() => (location.href = 'perfil.html'), 300);
+    return;
+  }
+
+  HemoApp.toast('Conta criada. Faça login para continuar.');
+  setTimeout(() => (location.href = 'login.html'), 300);
+}
 
   async function logout() {
     if (HemoSupabase.isConfigured()) await HemoSupabase.client.auth.signOut();
